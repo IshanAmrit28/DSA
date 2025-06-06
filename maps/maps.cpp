@@ -22,7 +22,7 @@ int main()
   cout << m.size() << endl;
   cout << m.count("aa") << endl;
   cout << m.count("ishan") << endl;
-  m.erase("yoyoyo");
+  // m.erase("yoyoyo");
   cout << m.size() << endl;
 
   // traverse using iterator
