@@ -26,7 +26,7 @@ int main()
   cout << m.size() << endl;
 
   // traverse using iterator
-
+  cout << m["yoyoyo"] << endl;
   unordered_map<string, int>::iterator it = m.begin();
 
   while (it != m.end())
