@@ -1,56 +1,79 @@
 #include <iostream>
-#include <unordered_map>
-#include <list>
+#include <vector>
+#include <queue>
 using namespace std;
-template <typename T>
-class Graph
+
+void BFS(int n, int start, vector<int> adj[], vector<int> &bfs)
 {
+  vector<bool> visited(n + 1, false);
+  queue<int> q;
+  q.push(start);
+  visited[start] = true;
 
-public:
-  unordered_map<T, list<T>> adj;
-
-  void addEdge(T u, T v, bool direction)
+  while (!q.empty())
   {
-    // direction=0 ->undirected
-    // direction=1 ->directed
-    adj[u].push_back(v);
-    if (direction == 0)
+    int node = q.front();
+    q.pop();
+    bfs.push_back(node);
+    for (auto it : adj[node])
     {
-      adj[v].push_back(u);
-    }
-  }
-
-  void printAdjList()
-  {
-    for (auto i : adj)
-    {
-      cout << i.first << "-> ";
-      for (auto j : i.second)
+      if (!visited[it])
       {
-        cout << j << ", ";
+        q.push(it);
+        visited[it] = true;
       }
-      cout << endl;
     }
   }
-};
+}
 
+void DFS_traverse(int start, vector<int> adj[], vector<int> &dfs, vector<bool> &visited)
+{
+  visited[start] = true;
+  dfs.push_back(start);
+  for (auto it : adj[start])
+  {
+    if (!visited[it])
+    {
+      DFS_traverse(it, adj, dfs, visited);
+    }
+  }
+}
+void DFS(int n, int start, vector<int> adj[], vector<int> &dfs)
+{
+  vector<bool> visited(n, false);
+  DFS_traverse(start, adj, dfs, visited);
+}
 int main()
 {
+  cout << "enter nodes and edges" << endl;
   int n;
-  cout << "Enter the number of edges" << endl;
-  cin >> n;
   int m;
-  cout << "enter the number of edges " << endl;
-  cin >> m;
-  Graph<int> g;
+  cin >> n >> m;
+  vector<int> adj[n + 1];
   for (int i = 0; i < m; i++)
   {
     int u, v;
     cin >> u >> v;
-    // creating undirected graph
-    g.addEdge(u, v, 0);
+    adj[u].push_back(v);
+    ;
+    adj[v].push_back(u);
   }
-  // printing
-  g.printAdjList();
+
+  cout << "traversal using BFS: ";
+  vector<int> bfs;
+  vector<int> dfs;
+  int start = 1;
+  BFS(n, start, adj, bfs);
+  for (auto i : bfs)
+  {
+    cout << i << "|";
+  }
+  cout << endl;
+  cout << "traversal using DFS: ";
+  DFS(n, start, adj, dfs);
+  for (auto i : dfs)
+  {
+    cout << i << "|";
+  }
   return 0;
 }
